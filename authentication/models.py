@@ -3,22 +3,19 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, Permi
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, phone_number=None):
+    def create_user(self, email, username, password=None, phone_number=None):
         if email is None:
             raise TypeError('Users should have a Email')
 
-        user = self.model(email=self.normalize_email(email), phone_number=phone_number)
+        user = self.model(email=self.normalize_email(email), username=username, phone_number=phone_number)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password=None):
-        if password is None:
-            raise TypeError('Password should not be none')
-
-        user = self.create_user(email, password)
-        user.is_superuser = True
+    def create_superuser(self, email, username, password=None, **extra_fields):
+        user = self.create_user(email, username, password, **extra_fields)
         user.is_staff = True
+        user.is_superuser = True
         user.save()
         return user
 
@@ -33,12 +30,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.username
 
     def tokens(self):
         refresh = RefreshToken.for_user(self)
