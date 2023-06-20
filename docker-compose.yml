@@ -1,12 +1,26 @@
+version: "3.9"
+
 services:
-  web:
+
+#  db:
+#    image: postgres:latest
+#    restart: always
+#    environment:
+#      POSTGRES_USER: ${DB_USER}
+#      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#      POSTGRES_DB: ${DB_NAME}
+#      DATABASE_HOSTNAME: ${DB_HOST}
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - "./postgres:/var/lib/postgresql/data"
+
+  app:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - .:/market
     ports:
-      - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    - "8000:8000"
+    command: bash -c "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+#    depends_on:
+#      - db
