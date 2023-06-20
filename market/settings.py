@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-!la@#)ra1fisg$fr5-6^v!#3zpm)97l2a46hsk6*x9p=b8jgya
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['165.22.86.200']
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'authentication.User'
 # Application definition
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'authentication',
     'drf_yasg',
 ]
@@ -140,6 +141,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TWILIO_ACCOUNT_SID = 'AC9f5aee1e361fbf38ac7a332ea9a8e9bd'
+TWILIO_AUTH_TOKEN = '6ea6a40e35fa48c1b2a69c30f662e7bb'
+TWILIO_PHONE_NUMBER = '+14066292799'
+
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': "dlkewfuta",
+    'API_KEY': "529121523867476",
+    'API_SECRET': "NoYddwMdSOKJ1ms7UtVT1DFVkc4",
+}
 
 # {
 #   "username": "Aldik",
