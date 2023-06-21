@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status, views
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import RegistrationSerializer, LoginSerializer, LogoutSerializer, ProfileSerializer
 from rest_framework.views import APIView
@@ -30,7 +31,6 @@ class LoginAPIView(generics.GenericAPIView):
 
 class LogoutAPIView(generics.GenericAPIView):
     serializer_class = LogoutSerializer
-    permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -41,6 +41,7 @@ class LogoutAPIView(generics.GenericAPIView):
 
 class ProfileView(generics.GenericAPIView):
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         request_body=ProfileSerializer,
@@ -49,6 +50,7 @@ class ProfileView(generics.GenericAPIView):
 
     def put(self, request):
         user = request.user
+
         serializer = ProfileSerializer(user, data=request.data)
 
         if serializer.is_valid():

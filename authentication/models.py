@@ -27,7 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=255, blank=True, null=True, unique=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    photo = models.ImageField(upload_to='photo/', null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True, default=None)
     # verification_code = models.CharField(max_length=6)
     is_verified = models.BooleanField(default=False)

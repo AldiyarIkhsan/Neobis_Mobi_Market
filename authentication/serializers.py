@@ -27,17 +27,19 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 class ProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(read_only=True)
+    username = serializers.EmailField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'birth_date', 'phone_number']
+        fields = ['first_name', 'last_name', 'birth_date', 'username', 'photo', 'email']
 
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.birth_date = validated_data.get('birth_date', instance.date_born)
-        instance.avatar = validated_data.get('avatar', instance.avatar)
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.username = validated_data.get('username', instance.username)
+        instance.photo = validated_data.get('photo', instance.photo)
         instance.save()
         return instance
 
@@ -72,7 +74,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
         return {
             'username': user.username,
-            'tokens': user.tokens
+            'tokens': self.get_tokens(attrs)
         }
 
         return super().validate(attrs)
@@ -94,8 +96,6 @@ class LogoutSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
         except TokenError:
             self.fail('bad_token')
-
-
 
 class PhoneVerificationSerializer(serializers.ModelSerializer):
     class Meta:
