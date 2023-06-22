@@ -44,6 +44,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class VerifyPhone(models.Model):
+class PhoneVerification(models.Model):
     phone = models.CharField(max_length=255)
     code = models.CharField(max_length=255, unique=True)

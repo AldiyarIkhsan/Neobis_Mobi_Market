@@ -8,9 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from twilio.rest import Client
 from django.conf import settings
-from .models import User
-from rest_framework import viewsets
-from rest_framework import generics, status, views, permissions
+from .models import User, PhoneVerification
+import random
+import string
 from rest_framework.exceptions import AuthenticationFailed, NotAcceptable
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status, generics, exceptions, permissions
@@ -95,11 +95,11 @@ class SendCodeView(APIView):
                 raise NotAcceptable("Please enter a valid phone.")
 
             code = ''.join(random.choice(string.digits) for _ in range(4))
-            VerifyPhone.objects.create(phone=user.phone_number, code=code)
+            PhoneVerification.objects.create(phone=user.phone_number, code=code)
             try:
                 client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
                 message = client.messages.create(
-                    body=f"Your verification code pin is {code}",
+                    body=f"Hi, your verification code pin is {code}",
                     from_=settings.TWILIO_PHONE_NUMBER,
                     to=user.phone_number
                 )
@@ -111,11 +111,11 @@ class SendCodeView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PhoneVerifyView(APIView):
+class PhoneVerificationView(APIView):
     def post(self, request):
         data = request.data
 
-        verify_phone = VerifyPhone.objects.filter(code=data['code']).first()
+        verify_phone = PhoneVerification.objects.filter(code=data['code']).first()
 
         if data['code'] != int(verify_phone.code):
             raise exceptions.APIException('Code is incorrect!')

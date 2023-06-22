@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutAPIView.as_view(), name="logout"),
     path('profile/', ProfileView.as_view(), name='profile'),
-    path('send-sms/', SendCodeView.as_view(), name='send_sms')
+    path('send-code/', SendCodeView.as_view(), name='send-code')
 ]
