@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'market.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'marke_db',
+        'NAME': 'db',
         'USER': 'market_username',
         'PASSWORD': 'market_password',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -159,11 +159,3 @@ CLOUDINARY_STORAGE = {
     'API_KEY': "529121523867476",
     'API_SECRET': "NoYddwMdSOKJ1ms7UtVT1DFVkc4",
 }
-
-# {
-#   "username": "Aldik",
-#   "email": "Aldi@gmail.com",
-#   "password": "qwerty123!@#",
-#   "confirm_password": "qwerty123!@#"
-# }
-

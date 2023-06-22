@@ -6,10 +6,10 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: 'market_username'
-      POSTGRES_PASSWORD: 'market_password'
-      POSTGRES_DB: 'marke_db'
-      DATABASE_HOSTNAME: 'market_username'
+      POSTGRES_USER: "market_username"
+      POSTGRES_PASSWORD: "market_password"
+      POSTGRES_DB: "db"
+      DATABASE_HOSTNAME: "db"
     ports:
       - "5432:5432"
     volumes:
