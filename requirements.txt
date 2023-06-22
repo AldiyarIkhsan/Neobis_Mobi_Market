@@ -7,11 +7,13 @@ attrs==23.1.0
 certifi==2023.5.7
 charset-normalizer==3.1.0
 cloudinary==1.33.0
+decouple==0.0.7
 Django==3.2.13
 django-cloudinary-storage==0.3.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 drf-yasg==1.21.6
+env==0.1.0
 frozenlist==1.3.3
 idna==3.4
 inflection==0.5.1
