@@ -11,11 +11,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'confirm_password']
+        fields = ('username', 'email', 'password', 'confirm_password')
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def validate(self, attrs):
         if attrs['password'] != attrs['confirm_password']:
-            raise serializers.ValidationError("Password fields didn't match")
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
 
         return attrs
 
@@ -26,58 +29,28 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(read_only=True)
-    username = serializers.EmailField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'birth_date', 'username', 'photo', 'email']
+        fields = ('first_name', 'last_name', 'username', 'birth_date', 'email')
 
     def update(self, instance, validated_data):
+        # instance.photo = validated_data.get('photo', instance.photo)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.birth_date = validated_data.get('birth_date', instance.date_born)
         instance.username = validated_data.get('username', instance.username)
-        instance.photo = validated_data.get('photo', instance.photo)
+        instance.birth_date = validated_data.get('birth_date', instance.birth_date)
+
         instance.save()
+
         return instance
-
-class LoginSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=255, min_length=3)
-    password = serializers.CharField(
-        max_length=15, min_length=6, write_only=True)
-
-    tokens = serializers.SerializerMethodField()
-
-    def get_tokens(self, obj):
-        user = User.objects.get(username=obj['username'])
-
-        return {
-            'refresh': user.tokens()['refresh'],
-            'access': user.tokens()['access']
-        }
-    class Meta:
-        model = User
-        fields = ['username', 'password', 'tokens']
-
-    def validate(self, attrs):
-        username = attrs.get('username', '')
-        password = attrs.get('password', '')
-        filtered_user_by_username = User.objects.filter(username=username)
-        user = auth.authenticate(username=username, password=password)
-
-        if not user:
-            raise AuthenticationFailed('Invalid credentials, try again')
-        if not user.is_active:
-            raise AuthenticationFailed('Account disabled, contact admin')
-
-        return {
-            'username': user.username,
-            'tokens': self.get_tokens(attrs)
-        }
-
-        return super().validate(attrs)
 
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
@@ -97,7 +70,12 @@ class LogoutSerializer(serializers.Serializer):
         except TokenError:
             self.fail('bad_token')
 
-class PhoneVerificationSerializer(serializers.ModelSerializer):
+class SendCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['phone_number']
+
+    def update(self, instance, validated_data):
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.save()
+        return instance

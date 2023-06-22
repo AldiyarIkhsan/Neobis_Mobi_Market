@@ -27,9 +27,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=255, blank=True, null=True, unique=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
-    photo = models.ImageField(upload_to='photo/', null=True, blank=True)
+    photo = models.ImageField(upload_to='profiles/', null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True, default=None)
-    # verification_code = models.CharField(max_length=6)
+
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -42,11 +42,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        return self.username
+        return self.email
 
-    def tokens(self):
-        refresh = RefreshToken.for_user(self)
-        return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token)
-        }
+    # def tokens(self):
+    #     refresh = RefreshToken.for_user(self)
+    #     return {
+    #         'refresh': str(refresh),
+    #         'access': str(refresh.access_token)
+    #     }
+
+    class VerifyPhone(models.Model):
+        phone = models.CharField(max_length=255)
+        code = models.CharField(max_length=255, unique=True)
