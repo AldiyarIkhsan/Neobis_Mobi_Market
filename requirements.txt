@@ -7,7 +7,6 @@ attrs==23.1.0
 certifi==2023.5.7
 charset-normalizer==3.1.0
 cloudinary==1.33.0
-decouple==0.0.7
 Django==3.2.13
 django-cloudinary-storage==0.3.0
 djangorestframework==3.14.0
@@ -22,6 +21,7 @@ packaging==23.1
 Pillow==9.5.0
 psycopg2==2.9.6
 PyJWT==2.7.0
+python-decouple==3.8
 pytz==2023.3
 PyYAML==6.0
 requests==2.31.0
