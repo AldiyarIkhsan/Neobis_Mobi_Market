@@ -2,18 +2,18 @@ version: "3.9"
 
 services:
 
-#  db:
-#    image: postgres:latest
-#    restart: always
-#    environment:
-#      POSTGRES_USER: ${DB_USER}
-#      POSTGRES_PASSWORD: ${DB_PASSWORD}
-#      POSTGRES_DB: ${DB_NAME}
-#      DATABASE_HOSTNAME: ${DB_HOST}
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - "./postgres:/var/lib/postgresql/data"
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: 'market_username'
+      POSTGRES_PASSWORD: 'market_password'
+      POSTGRES_DB: 'marke_db'
+      DATABASE_HOSTNAME: 'market_username'
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./postgres:/var/lib/postgresql/data"
 
   app:
     build: .
@@ -22,5 +22,5 @@ services:
     ports:
     - "8000:8000"
     command: bash -c "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-#    depends_on:
-#      - db
+    depends_on:
+      - db
