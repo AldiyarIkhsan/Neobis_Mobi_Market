@@ -21,7 +21,6 @@ class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     permission_classes = permissions.IsAuthenticated
 
-
 class ProductLikeAPIView(APIView):
     permission_classes = permissions.IsAuthenticated
 
@@ -50,13 +49,9 @@ class ProductUnlikeAPIView(APIView):
         except ObjectDoesNotExist:
             return Response({'message': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Check if the user has liked the product
         if not product.likes.filter(id=user.id).exists():
             return Response({'message': 'You have not liked this product'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Delete the ProductLike instance
         ProductLike.objects.filter(product=product, user=user).delete()
 
         return Response({'message': 'Product unliked successfully'}, status=status.HTTP_204_NO_CONTENT)
-
-
