@@ -23,6 +23,9 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
 
 class ProductCRUDView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = permissions.IsAuthenticated
     @swagger_auto_schema(
         operation_description="This endpoint makes CRUD for product.",
         responses={
@@ -30,6 +33,3 @@ class ProductCRUDView(generics.RetrieveUpdateDestroyAPIView):
             400: 'Bad Request'
         }
     )
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    permission_classes = permissions.IsAuthenticated
