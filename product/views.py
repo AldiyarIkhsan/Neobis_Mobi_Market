@@ -22,7 +22,7 @@ class ProductListCreateView(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class ProductCRUDView(generics.RetrieveUpdateDestroyAPIView):
+class Product_CRUDView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = permissions.IsAuthenticated
