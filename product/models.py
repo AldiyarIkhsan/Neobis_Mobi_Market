@@ -10,11 +10,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-class ProductLike(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_likes')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ['product', 'user']

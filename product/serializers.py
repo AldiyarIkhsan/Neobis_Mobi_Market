@@ -16,7 +16,5 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ["id", "like_count", "name", "price", "photo", "description", "orderer", "likes"]
         read_only_fields = ('id', 'orderer', 'like_count')
 
-    def get_like_count(self, obj):
+    def like_sum(self, obj):
         return obj.like_count
-
-
