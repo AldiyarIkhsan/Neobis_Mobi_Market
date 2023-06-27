@@ -42,7 +42,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'username', 'birth_date', 'email')
 
     def update(self, instance, validated_data):
-        # instance.photo = validated_data.get('photo', instance.photo)
+        instance.photo = validated_data.get('photo', instance.photo)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.username = validated_data.get('username', instance.username)

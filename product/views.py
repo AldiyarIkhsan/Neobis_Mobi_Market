@@ -1,35 +1,20 @@
-from rest_framework.views import APIView
-from product.models import Product
-from product.serializers import ProductSerializer
-from rest_framework import status, generics, permissions
-from drf_yasg.utils import swagger_auto_schema
+from rest_framework import generics, permissions
+from .models import Product
+from .serializers import ProductSerializer
 
 class ProductListCreateView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
-    permission_classes = permissions.IsAuthenticated
-    @swagger_auto_schema(
-        operation_description="This endpoint return all user products.",
-        responses={
-            200: ProductSerializer,
-            400: 'Bad Request'
-        }
-    )
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Product.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(username=self.request.user)
 
 
-class Product_CRUDView(generics.RetrieveUpdateDestroyAPIView):
+class ProductCRUDView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = permissions.IsAuthenticated
-    @swagger_auto_schema(
-        operation_description="This endpoint makes CRUD for product.",
-        responses={
-            200: ProductSerializer,
-            400: 'Bad Request'
-        }
-    )
+    permission_classes = [permissions.IsAuthenticated]
+

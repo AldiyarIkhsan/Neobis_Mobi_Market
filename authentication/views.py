@@ -15,8 +15,6 @@ from rest_framework.exceptions import AuthenticationFailed, NotAcceptable
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status, generics, exceptions, permissions
 
-
-
 class UserRegistrationView(APIView):
     @swagger_auto_schema(request_body=RegistrationSerializer)
     def post(self, request: Request):
